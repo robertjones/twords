@@ -35,16 +35,25 @@ def text_to_counted_phrases(text, num_words):
     return sorted(count_phrases(phrases, " ".join(words)), reverse=True)
 
 def printable_only(text):
-	return "".join([c for c in text if c in string.printable])
+    return "".join([c for c in text if c in string.printable])
 
 def common_phrases_in_tweets(screen_name):
-	tweets = twitter.get_user_timeline(screen_name=screen_name, count=200, include_rts=False, include_entities=False)
-	tweet_text = "".join([printable_only(tweet['text']) for tweet in tweets])
-	return text_to_counted_phrases(tweet_text, 3)[:10]
+    tweets = twitter.get_user_timeline(screen_name=screen_name, 
+                                       count=200, 
+                                       include_rts=False, 
+                                       include_entities=False)
+    tweet_text = "".join([printable_only(tweet['text']) for tweet in tweets])
+    return text_to_counted_phrases(tweet_text, 3)[:10]
+
+@app.route('/<screen_name>')
+def results(screen_name):
+    return ("@" + screen_name + "'s most common three word phrases are: " + 
+           str(common_phrases_in_tweets(screen_name)))
 
 @app.route('/')
-def app_page():
-    return str(common_phrases_in_tweets("robjones"))
+def home():
+    return "Enter a Twitter username after the '/' (e.g. '/twitter') \
+    to find the most common phrases."
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
