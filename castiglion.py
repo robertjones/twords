@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
-import os, string, re
+import os
+import string
+import re
 from twython import Twython
 app = Flask(__name__)
 
@@ -7,7 +9,9 @@ app = Flask(__name__)
 APP_KEY = os.environ['APP_KEY']
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 
+
 twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+
 
 def remove_punctuation(s):
     regex1 = re.compile('[%s]' % re.escape(string.punctuation))
@@ -34,26 +38,31 @@ def text_to_counted_phrases(text, num_words):
     phrases = list_phrases(words, num_words)
     return sorted(count_phrases(phrases, " ".join(words)), reverse=True)
 
+
 def printable_only(text):
     return "".join([c for c in text if c in string.printable])
 
+
 def common_phrases_in_tweets(screen_name):
-    tweets = twitter.get_user_timeline(screen_name=screen_name, 
-                                       count=200, 
-                                       include_rts=False, 
+    tweets = twitter.get_user_timeline(screen_name=screen_name,
+                                       count=200,
+                                       include_rts=False,
                                        include_entities=False)
     tweet_text = "".join([printable_only(tweet['text']) for tweet in tweets])
     return text_to_counted_phrases(tweet_text, 3)[:10]
 
+
 @app.route('/<screen_name>')
 def results(screen_name):
-    return ("@" + screen_name + "'s most common three word phrases are: " + 
-           str(common_phrases_in_tweets(screen_name)))
+    return ("@" + screen_name + "'s most common three word phrases are: " +
+            str(common_phrases_in_tweets(screen_name)))
+
 
 @app.route('/')
 def home():
     return "Enter a Twitter username after the '/' (e.g. '/twitter') \
     to find the most common phrases."
+
 
 if __name__ == '__main__':
     app.run()
