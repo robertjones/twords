@@ -1,0 +1,5 @@
+Flask==0.10.1
+Jinja2==2.7.2
+Werkzeug==0.9.6
+gunicorn==19.1.1
+Twython==3.1.2
