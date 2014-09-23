@@ -49,13 +49,19 @@ def common_phrases_in_tweets(screen_name):
                                        include_rts=False,
                                        include_entities=False)
     tweet_text = "".join([printable_only(tweet['text']) for tweet in tweets])
-    return text_to_counted_phrases(tweet_text, 3)[:10]
+    return (text_to_counted_phrases(tweet_text, 3)[:5], len(tweets))
 
 
 @app.route('/<screen_name>')
-def results(screen_name):
-    return ("@" + screen_name + "'s most common three word phrases are: " +
-            str(common_phrases_in_tweets(screen_name)))
+def results(screen_name, num_words=3):
+    phrases, num_tweets = common_phrases_in_tweets(screen_name)
+    person = {}
+    person['screen_name'] = screen_name
+    person['num_tweets'] = num_tweets
+    person['phrases'] = [{'text': p[1], 'freq': p[0]} for p in phrases]
+    people = [person]
+    return render_template('output.html', people=people, num_words=num_words, 
+                           num_people=len(people))
 
 
 @app.route('/')
@@ -65,4 +71,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

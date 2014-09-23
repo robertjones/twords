@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {  
+  {% for person in people %}
+    var {{person['screen_name']}}_data = google.visualization.arrayToDataTable([
+      ['Phrase', 'Frequency', {role: 'annotation'}],
+      {% for phrase in person['phrases'][:5] %}
+      ['{{phrase['text']}}', {{phrase['freq']}}, {{phrase['freq']}}],
+      {% endfor %}
+    ]);
+
+    var {{person['screen_name']}}_options = {
+      title: 'Top {{num_words}} phrases (n={{person['num_tweets']}})',
+      hAxis: {minValue: 0, maxValue: 10 {# {{max(phrase['freq'] for phrase in person['phrases'] for person in people)}} #},
+        gridlines: {color: 'transparent'}, textPosition: 'none'},
+      legend: {position: 'none'},
+      chartArea: {height: '90%', top: '8%', width:'70%', left: '30%'}
+    };
+
+    var {{person['screen_name']}}_chart = new google.visualization.BarChart(document.getElementById('{{person['screen_name']}}_chart'));
+
+    {{person['screen_name']}}_chart.draw({{person['screen_name']}}_data, {{person['screen_name']}}_options);
+  {% endfor %}
+  }
+</script>
+<h2>Top {{num_words}} word phrases in tweets</h2>
+<div class="row">
+  {% for person in people %}
+  <div id="{{person['scree_name']}}" class="col-md-{{(12/num_people)|int}}">
+    <h3>{{person['name']}}<br />
+      <small>{{person['screen_name']}}</small></h3>
+    <p>IMAGE TO BE INSERTED: person['image_url']</p>
+    <p>"{{person['phrases'][0]['text']}}" TODO: Make big and quote style</p>
+    <div id="{{person['screen_name']}}_chart" style="width: 100%; height: 250px;"></div>
+  </div>
+  {% endfor %}
+<small>Note: Based on the their 200 most recent tweets minus native retweets (number of tweets in sample indicated by 'n=').</small>
+</div>
+<hr />
+<h2>Try some new Twitter accounts</h2>
+<form name="tword_lookup" method="post" action="/">
+  <div class="form-group">
+    <label for="num_words">Show me the top</label>
+    <input type="number" name="num_words" class="form-control" value="3"></input>
+  </div>
+  <div class="form-group">
+    <label for="screen_names">word phrases for</label>
+    <input type="text" name="screen_names" class="form-control" value=""></input>
+  </div>
+  <button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-stats"></span> Go!</button>
+</form>
+{% endblock %}
