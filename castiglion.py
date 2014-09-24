@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import os
 import string
 import re
@@ -52,16 +52,35 @@ def common_phrases_in_tweets(screen_name):
     return (text_to_counted_phrases(tweet_text, 3)[:5], len(tweets))
 
 
-@app.route('/<screen_name>')
-def results(screen_name, num_words=3):
-    phrases, num_tweets = common_phrases_in_tweets(screen_name)
-    person = {}
-    person['screen_name'] = screen_name
-    person['num_tweets'] = num_tweets
-    person['phrases'] = [{'text': p[1], 'freq': p[0]} for p in phrases]
-    people = [person]
+@app.route('/<joined_screen_names>')
+def results(joined_screen_names, num_words=3):
+    # TODO: combine into a single or fewer Twitter API calls
+    screen_names = joined_screen_names.split('+')
+    people = []
+    for screen_name in screen_names:
+        phrases, num_tweets = common_phrases_in_tweets(screen_name)
+        user = twitter.lookup_user(screen_name=screen_name)[0]
+        person = {}
+        person['name'] = user['name'] 
+        person['description'] = user['description']
+        person['profile_image_url'] = user['profile_image_url'
+                                           ].replace("_normal", "_400x400")
+        person['screen_name'] = screen_name
+        person['num_tweets'] = num_tweets
+        person['phrases'] = [{'text': p[1], 'freq': p[0]} for p in phrases]
+        people.append(person)
+    at_screen_names = ["@" + person['screen_name'] for person in people]
+    max_freq = max(int(phrase['freq']) for phrase in person['phrases'])
     return render_template('output.html', people=people, num_words=num_words, 
-                           num_people=len(people))
+                           num_people=max(len(people),4), max_freq=max_freq,
+                           at_screen_names=at_screen_names)
+
+
+@app.route('/', methods=['POST'])
+def movealong():
+    #TODO: Make a more general parser
+    names = request.form['screen_names'].replace('@', '').replace(' ','').replace('\n','').replace('\r','').split(',')
+    return redirect("/" + "+".join(names))
 
 
 @app.route('/')
