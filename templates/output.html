@@ -48,14 +48,22 @@
         <form name="tword_lookup" method="post" action="/">
           <div class="form-group">
             <label for="screen_names">Twitter screen name(s)</label>
-            <p><small>Separated with commas</small></p>
             <textarea name="screen_names" class="form-control" 
                       rows="3">{{at_screen_names|join(', ')}}</textarea>
+            <span class="help-block">Separated with commas</span>
           </div>
-          <button type="submit" class="btn btn-default">
+          <button type="submit" class="btn btn-default btn-block">
             <span class="glyphicon glyphicon-stats"></span> Go!
           </button>
         </form>
+      </div> <!-- End panel body div -->
+    </div> <!-- End panel container -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Link to this page</h3>
+      </div>
+      <div class="panel-body">
+        <input type="text" class="form-control input-sm" value="{{request.url}}"></input>
       </div> <!-- End panel body div -->
     </div> <!-- End panel container -->
     <p>

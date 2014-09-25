@@ -90,7 +90,7 @@ def movealong():
 def home():
     brit_politicians = ['david_cameron', 'nick_clegg', 'ed_miliband']
     us_pop = ['katyperry', 'justinbieber', 'britneyspears']
-    brit_news = ['mailonline', 'guardian', 'TheSunNewspaper']
+    brit_news = ['mailonline', 'guardian', 'thesunnewspaper']
     tech_cos = ['google', 'twitter', 'facebook']
     bank = [brit_politicians, us_pop, brit_news]
     selection = random.choice(bank)
