@@ -4,12 +4,14 @@
   {% for person in people %}
   <div id="{{person['screen_name']}}" class="col-md-3">
     <div style="float:left; position:relative;">
-      <img src="{{person['profile_image_url']}}" width="100%" alt="{{person['name']}}: {{person['description']}}" />
+      <img src="{{person['profile_image_url']}}" width="100%" 
+           alt="{{person['name']}}: {{person['description']}}" />
       <div style="position:absolute; bottom:0px; left:0px width:100%; 
                   background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.5);
                   color:white;">
         <h3 style="padding:10px; margin:0px; width:100%);">
-          {{person['name']}}<br /><small style="color:white;">@{{person['screen_name']}}</small>
+          {{person['name']}}<br />
+          <small style="color:white;">@{{person['screen_name']}}</small>
         </h3>
       </div>
     </div>
@@ -52,7 +54,8 @@
       </div>
     </div>
     <p>
-      Note: * Analysis based on their 200 most recent tweets minus native retweets.
+      Note: * Analysis based on their 200 most recent tweets minus native 
+      retweets.
     </p>
   </div>
 </div>
