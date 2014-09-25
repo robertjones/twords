@@ -56,7 +56,7 @@ def common_phrases_in_tweets(screen_name):
 @app.route('/<joined_screen_names>')
 def results(joined_screen_names, num_words=3):
     # TODO: combine into a single or fewer Twitter API calls
-    screen_names = joined_screen_names.split('+')
+    screen_names = joined_screen_names.split('+')[:20]
     people = []
     for screen_name in screen_names:
         phrases, num_tweets = common_phrases_in_tweets(screen_name)
@@ -83,7 +83,7 @@ def movealong():
     names = request.form['screen_names'] \
                    .replace('@', '').replace(' ', '').replace('\n', '') \
                    .replace('\r', '').split(',')
-    return redirect("/" + "+".join(names))
+    return redirect("/" + "+".join(names)[:20])
 
 
 @app.route('/')
