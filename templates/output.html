@@ -1,40 +1,45 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="row">
-  {% for person in people %}
-  <div id="{{person['screen_name']}}" class="col-md-3">
-    <div style="float:left; position:relative;">
-      <img src="{{person['profile_image_url']}}" width="100%" 
-           alt="{{person['name']}}: {{person['description']}}" />
-      <div style="position:absolute; bottom:0px; left:0px width:100%; 
-                  background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.5);
-                  color:white;">
-        <h3 style="padding:10px; margin:0px; width:100%);">
-          {{person['name']}}<br />
-          <small style="color:white;">@{{person['screen_name']}}</small>
-        </h3>
-      </div>
-    </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Freq.</th>
-          <th>Phrase</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for phrase in person['phrases'] %}
-        <tr>
-          <td>{{phrase['freq']}}</td>
-          <td>{{phrase['text']}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <p>Of their {{person['num_tweets']}} most recent tweets*.
-  </div>
-  {% endfor %} 
-  <div class="col-md-3">
+  <div class="col-md-9 col-sm-8"> <!-- Left hand column -->
+    <div class="row">
+      {% for person in people %}
+      <div id="{{person['screen_name']}}" class="col-xl-3 col-md-4 col-sm-6">
+        <div style="float:left; position:relative;">
+          <img src="{{person['profile_image_url']}}" width="100%" 
+               alt="{{person['name']}}: {{person['description']}}" />
+          <div style="position:absolute; bottom:0px; left:0px 
+                      background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.5);
+                      color:white;">
+            <h3 style="padding:10px; margin:0px; color:white;">
+              {{person['name']}}<br />
+              <small style="color:white;">@{{person['screen_name']}}</small>
+            </h3>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="1%">#&nbsp;</th>
+              <th width="99%">Phrase</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for phrase in person['phrases'] %}
+            <tr>
+              <td>{{phrase['freq']}}</td>
+              <td>{{phrase['text']}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <p>Of their {{person['num_tweets']}} most recent tweets*.</p>
+        <br />&nbsp;
+      </div> <!-- End person column div -->
+    {% endfor %} 
+    </div> <!-- End left hand column row div -->
+  </div> <!-- End left hand column div -->
+  <div class="col-md-3 col-sm-4"> <!-- Right hand column -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Find top phrases for</h3>
@@ -51,12 +56,12 @@
             <span class="glyphicon glyphicon-stats"></span> Go!
           </button>
         </form>
-      </div>
-    </div>
+      </div> <!-- End panel body div -->
+    </div> <!-- End panel container -->
     <p>
       Note: * Analysis based on their 200 most recent tweets minus native 
       retweets.
     </p>
-  </div>
+  </div> <!-- End right hand column div -->
 </div>
 {% endblock %}
