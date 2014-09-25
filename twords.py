@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 import string
 import re
+import random
 from twython import Twython
 app = Flask(__name__)
 
@@ -87,8 +88,13 @@ def movealong():
 
 @app.route('/')
 def home():
-    return "Enter a Twitter username after the '/' (e.g. '/twitter') \
-    to find the most common phrases."
+    brit_politicians = ['david_cameron', 'nick_clegg', 'ed_miliband']
+    us_pop = ['katyperry', 'justinbieber', 'britneyspears']
+    brit_news = ['mailonline', 'guardian', 'TheSunNewspaper']
+    tech_cos = ['google', 'twitter', 'facebook']
+    bank = [brit_politicians, us_pop, brit_news]
+    selection = random.choice(bank)
+    return redirect("/" + "+".join(selection))
 
 
 if __name__ == '__main__':
