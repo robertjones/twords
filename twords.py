@@ -88,7 +88,7 @@ def movealong():
     names = request.form['screen_names'] \
                    .replace('@', '').replace(' ', '').replace('\n', '') \
                    .replace('\r', '').split(',')
-    return redirect("/" + "+".join(names)[:20])
+    return redirect("/" + "+".join(names[:20]))
 
 
 @app.route('/')
