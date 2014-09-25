@@ -58,23 +58,28 @@ def results(joined_screen_names, num_words=3):
     # TODO: combine into a single or fewer Twitter API calls
     screen_names = joined_screen_names.split('+')[:20]
     people = []
+    bad_names = []
     for screen_name in screen_names:
-        phrases, num_tweets = common_phrases_in_tweets(screen_name)
-        user = twitter.lookup_user(screen_name=screen_name)[0]
-        person = {}
-        person['name'] = user['name']
-        person['description'] = user['description']
-        person['profile_image_url'] = user['profile_image_url'
-                                           ].replace("_normal", "_400x400")
-        person['screen_name'] = screen_name
-        person['num_tweets'] = num_tweets
-        person['phrases'] = [{'text': p[1], 'freq': p[0]} for p in phrases]
-        people.append(person)
+        try:
+            phrases, num_tweets = common_phrases_in_tweets(screen_name)
+            user = twitter.lookup_user(screen_name=screen_name)[0]
+            person = {}
+            person['name'] = user['name']
+            person['description'] = user['description']
+            person['profile_image_url'] = user['profile_image_url'
+                                               ].replace("_normal", "_400x400")
+            person['screen_name'] = screen_name
+            person['num_tweets'] = num_tweets
+            person['phrases'] = [{'text': p[1], 'freq': p[0]} for p in phrases]
+            people.append(person)
+        except:
+            bad_names.append(screen_name)
     at_screen_names = ["@" + person['screen_name'] for person in people]
     max_freq = max(int(phrase['freq']) for phrase in person['phrases'])
     return render_template('output.html', people=people, num_words=num_words,
                            num_people=max(len(people), 4), max_freq=max_freq,
-                           at_screen_names=at_screen_names)
+                           at_screen_names=at_screen_names, 
+                           bad_names=bad_names)
 
 
 @app.route('/', methods=['POST'])

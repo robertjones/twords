@@ -40,6 +40,11 @@
     </div> <!-- End left hand column row div -->
   </div> <!-- End left hand column div -->
   <div class="col-md-3 col-sm-4"> <!-- Right hand column -->
+    {% if bad_names %}
+    <div class="alert alert-warning" role="alert">
+      <b>Warning!</b> Unable to access data for: {{bad_names|join(', ')}}.
+    </div>
+    {% endif %}
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Find top phrases for</h3>
