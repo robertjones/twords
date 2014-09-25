@@ -61,7 +61,7 @@ def results(joined_screen_names, num_words=3):
         phrases, num_tweets = common_phrases_in_tweets(screen_name)
         user = twitter.lookup_user(screen_name=screen_name)[0]
         person = {}
-        person['name'] = user['name'] 
+        person['name'] = user['name']
         person['description'] = user['description']
         person['profile_image_url'] = user['profile_image_url'
                                            ].replace("_normal", "_400x400")
@@ -71,15 +71,17 @@ def results(joined_screen_names, num_words=3):
         people.append(person)
     at_screen_names = ["@" + person['screen_name'] for person in people]
     max_freq = max(int(phrase['freq']) for phrase in person['phrases'])
-    return render_template('output.html', people=people, num_words=num_words, 
-                           num_people=max(len(people),4), max_freq=max_freq,
+    return render_template('output.html', people=people, num_words=num_words,
+                           num_people=max(len(people), 4), max_freq=max_freq,
                            at_screen_names=at_screen_names)
 
 
 @app.route('/', methods=['POST'])
 def movealong():
-    #TODO: Make a more general parser
-    names = request.form['screen_names'].replace('@', '').replace(' ','').replace('\n','').replace('\r','').split(',')
+    # TODO: Make a more general parser
+    names = request.form['screen_names'] \
+                   .replace('@', '').replace(' ', '').replace('\n', '') \
+                   .replace('\r', '').split(',')
     return redirect("/" + "+".join(names))
 
 
