@@ -4,7 +4,7 @@
   <div class="col-md-9 col-sm-8"> <!-- Left hand column -->
     <div class="row">
       {% for person in people %}
-      <div id="{{person['screen_name']}}" class="col-xl-3 col-md-4 col-sm-6">
+      <div id="{{person['screen_name']}}" class="col-xl-3 col-md-4 col-sm-6 col-xs-12">
         <div style="float:left; position:relative;">
           <img src="{{person['profile_image_url']}}" width="100%" 
                alt="{{person['name']}}: {{person['description']}}" />
@@ -52,9 +52,7 @@
                       rows="3">{{at_screen_names|join(', ')}}</textarea>
             <span class="help-block">Separated with commas</span>
           </div>
-          <button type="submit" class="btn btn-default btn-block">
-            <span class="glyphicon glyphicon-stats"></span> Go!
-          </button>
+          <button type="submit" class="btn btn-default btn-block">Go!</button>
         </form>
       </div> <!-- End panel body div -->
     </div> <!-- End panel container -->
